@@ -1,0 +1,20 @@
+
+建立table指令：
+create table msft(
+   date VARCHAR(255) NOT NULL ,
+   open FLOAT NOT NULL,
+   high FLOAT NOT NULL,
+   low FLOAT NOT NULL,
+   close FLOAT NOT NULL,
+   volume INT NOT NULL
+);
+
+
+上傳資料指令：
+LOAD DATA INFILE '/var/lib/mysql-files/MSFT.csv'
+INTO TABLE msft
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+
