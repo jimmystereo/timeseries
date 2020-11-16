@@ -46,7 +46,8 @@ import {
 } from "react-stockcharts/lib/interactive";
 import { last, toObject } from "react-stockcharts/lib/utils";
 import { saveInteractiveNodes, getInteractiveNodes } from "./interactiveutils";
-
+var close_color = "#0325ff";
+var open_color = "#ffb303";
 const macdAppearance = {
   stroke: {
     macd: "#FF0000",
@@ -63,7 +64,6 @@ const bbStroke = {
 };
 
 const bbFill = "#4682B4";
-
 class CandleStickChartWithEquidistantChannel extends React.Component {
   constructor(props) {
     super(props);
@@ -425,7 +425,27 @@ class CandleStickChartWithEquidistantChannel extends React.Component {
               displayFormat={format(".2f")}
             />
 
-            <CandlestickSeries />
+            <CandlestickSeries
+              fill={(d) => {
+                let date = new Date();
+                //if the day is in future, change it's color!
+                if (d.date.getTime() > date.getTime()) {
+                  //yellow blue
+                  return d.close > d.open ? close_color : open_color;
+                }
+                //green red
+                return d.close > d.open ? "#6BA583" : "#FF0000";
+              }}
+              yAccessor={(d) => {
+                return {
+                  date: d.date,
+                  open: d.open,
+                  high: d.high,
+                  low: d.low,
+                  close: d.close,
+                };
+              }}
+            />
 
             <EdgeIndicator
               itemType="last"
@@ -525,7 +545,14 @@ class CandleStickChartWithEquidistantChannel extends React.Component {
 
               <BarSeries
                 yAccessor={(d) => d.volume}
-                fill={(d) => (d.close > d.open ? "#6BA583" : "#FF0000")}
+                fill={(d) => {
+                  let date = new Date();
+                  //if the day is in future, change it's color!
+                  if (d.date.getTime() > date.getTime()) {
+                    //yellow blue
+                    return d.close > d.open ? close_color : open_color;
+                  } return d.close > d.open ? "#6BA583" : "#FF0000";
+                }}
               />
             </Chart>
           ) : null}

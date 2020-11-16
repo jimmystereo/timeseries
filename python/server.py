@@ -10,13 +10,16 @@ from prophet import prophet_model
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/api/Current')
 def index():
     return get_data('current')
 
+
 @app.route('/api/Prophet')
 def get_data_yahoo():
     return get_data('prophet')
+
 
 def get_data(table):
     mydb = mysql.connector.connect(

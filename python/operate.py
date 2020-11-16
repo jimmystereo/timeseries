@@ -19,10 +19,10 @@ conn = MySQLdb.Connect(host='127.0.0.1',
                        charset='utf8')
 
 
-def work(days):
+def work(days, start):
     pm = prophet_model()
     stock = 'GOOG'
-    start = dt.datetime(2019, 10, 22)
+    # start = dt.datetime(2019, 10, 22)
     df = web.get_data_yahoo(stock, start, dt.date.today())
     df['date'] = df.index
     df['date'] = df['date'].apply(lambda x: str(x))
@@ -45,8 +45,8 @@ def work(days):
     return df
 
 
-def save_data(days):
-    df = work(days)
+def save_data(days, start):
+    df = work(days, start)
     df['date'] = df['date'].apply(lambda x: str(x)[0:-9])
     cur = conn.cursor()
     check = """drop table if exists prophet;"""
@@ -64,4 +64,5 @@ def save_data(days):
     conn.close()
 
 
-save_data(5)
+start = dt.datetime(2019, 10, 22)
+save_data(100, start)
